@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <style>
+    /* General styles */
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Open Sans', sans-serif;
+        background-color: #f7f7f7;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      table th,
+      table td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      table th {
+        background-color: #f7f7f7;
+        font-weight: 600;
+      }
+
+      button {
+        background-color: #2d8be2;
+        color: #fff;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #1877d2;
+      }
+
+      /* Search bar styles */
+
+      .search-bar {
+        display: flex;
+        margin-bottom: 20px;
+      }
+
+      .search-bar input[type="text"] {
+        flex-grow: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      .search-bar button {
+        padding: 10px;
+        background-color: #2d8be2;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        margin-left: 10px;
+      }
+
+      .search-bar button:hover {
+        background-color: #1877d2;
+      }
+
+      /* JavaScript-generated styles */
+
+      .hidden {
+        display: none;
+      }
+
+
+      /* Hamburger menu styles */
+		.hamburger {
+			position: fixed;
+			top: 10px;
+			left: 10px;
+			cursor: pointer;
+			z-index: 1000;
+		}
+
+		.hamburger span {
+			display: block;
+			width: 30px;
+			height: 4px;
+			margin-bottom: 5px;
+			background-color: #333;
+			border-radius: 5px;
+			transition: all 0.3s ease-in-out;
+		}
+
+		.hamburger.open span:nth-child(2) {
+			opacity: 0;
+		}
+
+		.hamburger.open span:nth-child(1) {
+			transform: rotate(45deg) translate(5px, 5px);
+		}
+
+		.hamburger.open span:nth-child(3) {
+			transform: rotate(-45deg) translate(5px, -5px);
+		}
+
+		/* Sidebar styles */
+		.sidebar {
+			position: fixed;
+			top: 0;
+			left: -200px;
+			width: 200px;
+			height: 100%;
+			background-color: #333;
+			color: #fff;
+			padding-top: 50px;
+			transition: all 0.3s ease-in-out;
+			z-index: 999;
+		}
+
+		.sidebar.open {
+			left: 0;
+		}
+
+		.sidebar h3 {
+			padding: 0 20px;
+			font-size: 1.2em;
+			margin-bottom: 20px;
+			border-bottom: 1px solid #fff;
+		}
+
+		.sidebar ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+
+		.sidebar li {
+			padding: 10px 20px;
+			border-bottom: 1px solid #555;
+			cursor: pointer;
+			transition: all 0.3s ease-in-out;
+		}
+
+		.sidebar li:hover {
+			background-color: #555;
+		}
+
+
+		<!--Pagination-->
+
+        .pagination {
+          margin-top: 20px;
+          text-align: center;
+      }
+
+      .pagination a {
+          color: black;
+          float: left;
+          padding: 8px 16px;
+          text-decoration: none;
+      }
+
+      .pagination a.active {
+          background-color: #4CAF50;
+          color: white;
+      }
+
+      .pagination a:hover:not(.active) {
+          background-color: #ddd;
+      }
+
+  </style>
+  <title>Tickets View</title>
+</head>
+<body>
+<!-- Hamburger menu -->
+<div class="hamburger" onclick="toggleSidebar()">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+  <h3>Dashboard Menu</h3>
+  <ul>
+    <li><a th:href="@{/view/admin/dashboard}" style="color: white">Home</a></li>
+    <li><a th:href="@{/view/admin/clients}" style="color: white">Clients</a></li>
+    <li><a th:href="@{/view/admin/tickets}" style="color: white">Tickets</a></li>
+    <li><a th:href="@{/view/admin/feedback}" style="color: white">Feedback</a></li>
+    <li><a th:href="@{/view/admin/profile}" style="color: white">Profile</a></li>
+    <li><a th:href="@{/login?logout}" style="color: white">Logout</a></li>
+  </ul>
+</div>
+
+<!-- Clients Table -->
+<div class="container">
+  <h1>Feedback View</h1>
+  <div class="search-container">
+    <input type="text" placeholder="Search..." id="searchInput" />
+    <button type="button" onclick="searchClients()">Search</button>
+  </div>
+  <table id="clientsTable">
+    <tr>
+      <th>Feedback Id</th>
+      <th>Names</th>
+      <th>Email</th>
+      <th>Feedback</th>
+      <th>Created At</th>
+      <th> </th>
+    </tr>
+    <tr th:each="feedback, row : ${feedback}" th:class="${row.odd}? 'odd' : 'even'">
+      <td th:text="${feedback.feedbackId}"></td>
+      <td th:text="${feedback.name}"></td>
+      <td th:text="${feedback.email}"></td>
+      <td th:text="${feedback.feedbackBody}"></td>
+      <td th:text="${feedback.createdAt}"></td>
+    </tr>
+
+  </table>
+
+  <div class="pagination">
+    <a href="#">1</a>
+    <a href="#">2</a>
+    <a href="#">3</a>
+    <!-- add more pages here -->
+  </div>
+</div>
+
+<script>
+
+  function toggleSidebar() {
+			var sidebar = document.getElementById("sidebar");
+			var hamburger = document.querySelector(".hamburger");
+
+			sidebar.classList.toggle("open");
+			hamburger.classList.toggle("open");
+		}
+
+  const searchInput = document.getElementById('search-input');
+  const searchButton = document.getElementById('search-button');
+  const rows = document.querySelectorAll('table tbody tr');
+
+  searchButton.addEventListener('click', () => {
+    const searchTerm = searchInput.value.toLowerCase();
+
+    rows.forEach(row => {
+      const cells = row.querySelectorAll('td');
+      let found = false;
+
+      cells.forEach(cell => {
+        if (cell.innerText.toLowerCase().includes(searchTerm)) {
+          found = true;
+        }
+      });
+
+      if (found) {
+        row.classList.remove('hidden');
+      } else {
+        row.classList.add('hidden');
+      }
+    });
+  });
+
+  const deleteButtons = document.querySelectorAll('.delete-button');
+
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const row = button.parentNode.parentNode;
+      row.parentNode.removeChild(row);
+    });
+  });
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Admin Profile</title>
+    <style>
+        .container {
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 20px;
+        }
+
+        h1 {
+          font-size: 28px;
+          font-weight: 600;
+          margin-bottom: 20px;
+          text-align: center;
+        }
+
+        form {
+          background-color: #fff;
+          border: 1px solid #ddd;
+          padding: 20px;
+          border-radius: 4px;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+          margin-bottom: 20px;
+        }
+
+        label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"],
+        textarea {
+          width: 100%;
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          font-size: 16px;
+        }
+
+        input[type="text"]:read-only,
+        input[type="email"]:read-only {
+          background-color: #f7f7f7;
+        }
+
+        button[type="submit"] {
+          background-color: #2d8be2;
+          color: #fff;
+          padding: 10px;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          margin-top: 20px;
+        }
+
+        button[type="submit"]:hover {
+          background-color: #1877d2;
+        }
+
+        /* Hamburger menu styles */
+		.hamburger {
+			position: fixed;
+			top: 10px;
+			left: 10px;
+			cursor: pointer;
+			z-index: 1000;
+		}
+
+		.hamburger span {
+			display: block;
+			width: 30px;
+			height: 4px;
+			margin-bottom: 5px;
+			background-color: #333;
+			border-radius: 5px;
+			transition: all 0.3s ease-in-out;
+		}
+
+		.hamburger.open span:nth-child(2) {
+			opacity: 0;
+		}
+
+		.hamburger.open span:nth-child(1) {
+			transform: rotate(45deg) translate(5px, 5px);
+		}
+
+		.hamburger.open span:nth-child(3) {
+			transform: rotate(-45deg) translate(5px, -5px);
+		}
+
+		/* Sidebar styles */
+		.sidebar {
+			position: fixed;
+			top: 0;
+			left: -200px;
+			width: 200px;
+			height: 100%;
+			background-color: #333;
+			color: #fff;
+			padding-top: 50px;
+			transition: all 0.3s ease-in-out;
+			z-index: 999;
+		}
+
+		.sidebar.open {
+			left: 0;
+		}
+
+		.sidebar h3 {
+			padding: 0 20px;
+			font-size: 1.2em;
+			margin-bottom: 20px;
+			border-bottom: 1px solid #fff;
+		}
+
+		.sidebar ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+
+		.sidebar li {
+			padding: 10px 20px;
+			border-bottom: 1px solid #555;
+			cursor: pointer;
+			transition: all 0.3s ease-in-out;
+		}
+
+		.sidebar li:hover {
+			background-color: #555;
+		}
+
+    </style>
+</head>
+<body>
+
+<!-- Hamburger menu -->
+<div class="hamburger" onclick="toggleSidebar()">
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <h3>Dashboard Menu</h3>
+    <ul>
+        <li><a th:href="@{/view/admin/dashboard}" style="color: white">Home</a></li>
+        <li><a th:href="@{/view/admin/clients}" style="color: white">Clients</a></li>
+        <li><a th:href="@{/view/admin/tickets}" style="color: white">Tickets</a></li>
+        <li><a th:href="@{/view/admin/feedback}" style="color: white">Feedback</a></li>
+        <li><a th:href="@{/view/admin/profile}" style="color: white">Profile</a></li>
+        <li><a th:href="@{/login?logout}" style="color: white">Logout</a></li>
+    </ul>
+</div>
+<div class="container">
+    <h1>Admin Profile</h1>
+    <form th:action="@{/user/update}" th:object="${user}" method="post" name="signup">
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" th:field="*{firstName}" id="firstName" value="John">
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" th:field="*{lastName}" id="lastName" >
+        </div>
+        <div class="form-group">
+            <label for="username">Email</label>
+            <input type="text" th:field="*{username}" id="username" value="johndoe" readonly>
+        </div>
+        <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" th:field="*{age}" id="age" name="age">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" th:field="*{password}" id="password" name="password">
+        </div>
+        <div class="form-group">
+            <label for="address">Address</label>
+            <textarea id="address" th:field="*{address}" name="address"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="phoneNumber">Phone Number</label>
+            <input type="tel" th:field="*{phoneNumber}" id="phoneNumber" value="(555) 123-4567">
+        </div>
+        <button type="submit">Save</button>
+    </form>
+</div>
+
+<script>
+    function toggleSidebar() {
+			var sidebar = document.getElementById("sidebar");
+			var hamburger = document.querySelector(".hamburger");
+
+			sidebar.classList.toggle("open");
+			hamburger.classList.toggle("open");
+		}
+</script>
+
+</body>
+</html>

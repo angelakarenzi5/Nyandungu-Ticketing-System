@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <style>
+    /* General styles */
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Open Sans', sans-serif;
+        background-color: #f7f7f7;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      table th,
+      table td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      table th {
+        background-color: #f7f7f7;
+        font-weight: 600;
+      }
+
+      button {
+        background-color: #2d8be2;
+        color: #fff;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #1877d2;
+      }
+
+      /* Search bar styles */
+
+      .search-bar {
+        display: flex;
+        margin-bottom: 20px;
+      }
+
+      .search-bar input[type="text"] {
+        flex-grow: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      .search-bar button {
+        padding: 10px;
+        background-color: #2d8be2;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        margin-left: 10px;
+      }
+
+      .search-bar button:hover {
+        background-color: #1877d2;
+      }
+
+      /* JavaScript-generated styles */
+
+      .hidden {
+        display: none;
+      }
+
+
+      /* Hamburger menu styles */
+		.hamburger {
+			position: fixed;
+			top: 10px;
+			left: 10px;
+			cursor: pointer;
+			z-index: 1000;
+		}
+
+		.hamburger span {
+			display: block;
+			width: 30px;
+			height: 4px;
+			margin-bottom: 5px;
+			background-color: #333;
+			border-radius: 5px;
+			transition: all 0.3s ease-in-out;
+		}
+
+		.hamburger.open span:nth-child(2) {
+			opacity: 0;
+		}
+
+		.hamburger.open span:nth-child(1) {
+			transform: rotate(45deg) translate(5px, 5px);
+		}
+
+		.hamburger.open span:nth-child(3) {
+			transform: rotate(-45deg) translate(5px, -5px);
+		}
+
+		/* Sidebar styles */
+		.sidebar {
+			position: fixed;
+			top: 0;
+			left: -200px;
+			width: 200px;
+			height: 100%;
+			background-color: #333;
+			color: #fff;
+			padding-top: 50px;
+			transition: all 0.3s ease-in-out;
+			z-index: 999;
+		}
+
+		.sidebar.open {
+			left: 0;
+		}
+
+		.sidebar h3 {
+			padding: 0 20px;
+			font-size: 1.2em;
+			margin-bottom: 20px;
+			border-bottom: 1px solid #fff;
+		}
+
+		.sidebar ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+
+		.sidebar li {
+			padding: 10px 20px;
+			border-bottom: 1px solid #555;
+			cursor: pointer;
+			transition: all 0.3s ease-in-out;
+		}
+
+		.sidebar li:hover {
+			background-color: #555;
+		}
+
+
+		/* Popup form styles */
+        .popup {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(0,0,0,0.5);
+            display: none;
+        }
+
+        .popup-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .book-ticket-btn {
+          position: fixed;
+          top: 20px;
+          left: 120px;
+        }
+
+
+      <!--Pagination-->
+
+        .pagination {
+          margin-top: 20px;
+          text-align: center;
+      }
+
+      .pagination a {
+          color: black;
+          float: left;
+          padding: 8px 16px;
+          text-decoration: none;
+      }
+
+      .pagination a.active {
+          background-color: #4CAF50;
+          color: white;
+      }
+
+      .pagination a:hover:not(.active) {
+          background-color: #ddd;
+      }
+
+
+  </style>
+    <title>Tickets View</title>
+</head>
+<body>
+<!-- Hamburger menu -->
+<div class="hamburger" onclick="toggleSidebar()">
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <h3>Dashboard Menu</h3>
+    <ul>
+        <li><a th:href="@{/view/user/dashboard}" style="color: white">Home</a></li>
+        <li><a th:href="@{/view/user/tickets}" style="color: white">My Tickets</a></li>
+        <li><a th:href="@{/view/user/profile}" style="color: white">Profile</a></li>
+        <li><a th:href="@{/login?logout}" style="color: white">Logout</a></li>
+    </ul>
+</div>
+
+
+<!-- Book Ticket button -->
+<div class="book-ticket-btn" onclick="togglePopup()">
+    <button>Book Ticket</button>
+</div>
+
+<!-- Popup form -->
+<div class="popup" id="popup">
+    <div class="popup-content">
+        <span class="popup-close" onclick="togglePopup()">&times;</span>
+        <!-- Book ticket form -->
+        <form id="book-ticket-form" th:action="@{/ticket/create}" th:object="${ticket}" method="post" >
+            <h2>Book Ticket</h2>
+
+            <label>Activity:</label>
+            <select th:field="*{activity}" name="activity" required >
+                <option value="">Select a activity</option>
+                <option value="Biking">Biking</option>
+                <option value="Jogging">Gymnastic</option>
+                <option value="Coffee Shop">Park Workshop</option>
+                <option value="Coffee Shop">Park Event</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="number-of-tickets">Number of Tickets:</label>
+            <input type="number" th:field="*{number}" id="number-of-tickets" name="number-of-tickets" required>
+
+            <label for="date">Date:</label>
+            <input type="date" th:field="*{date}" id="date" name="date" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+<!-- Clients Table -->
+<div class="container">
+    <h1>Tickets View</h1>
+    <div class="search-container">
+        <input type="text" placeholder="Search..." id="searchInput" />
+        <button type="button" onclick="searchClients()">Search</button>
+    </div>
+    <table id="clientsTable">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Activity</th>
+            <th>Number of tickets</th>
+            <th>date</th>
+            <th>status</th>
+        </tr>
+        <tr th:each="tickets, row : ${tickets}" th:class="${row.odd}? 'odd' : 'even'">
+            <td th:text="${tickets.user.firstName}"></td>
+            <td th:text="${tickets.user.lastName}"></td>
+            <td th:text="${tickets.activity}"></td>
+            <td th:text="${tickets.number}"></td>
+            <td th:text="${tickets.status}"></td>
+            <td th:text="${tickets.date}"></td>
+        </tr>
+
+    </table>
+    <div class="pagination">
+        <a href="#">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <!-- add more pages here -->
+    </div>
+</div>
+
+<script>
+
+  function toggleSidebar() {
+			var sidebar = document.getElementById("sidebar");
+			var hamburger = document.querySelector(".hamburger");
+
+			sidebar.classList.toggle("open");
+			hamburger.classList.toggle("open");
+		}
+
+  const searchInput = document.getElementById('search-input');
+  const searchButton = document.getElementById('search-button');
+  const rows = document.querySelectorAll('table tbody tr');
+
+  searchButton.addEventListener('click', () => {
+    const searchTerm = searchInput.value.toLowerCase();
+
+    rows.forEach(row => {
+      const cells = row.querySelectorAll('td');
+      let found = false;
+
+      cells.forEach(cell => {
+        if (cell.innerText.toLowerCase().includes(searchTerm)) {
+          found = true;
+        }
+      });
+
+      if (found) {
+        row.classList.remove('hidden');
+      } else {
+        row.classList.add('hidden');
+      }
+    });
+  });
+
+  const deleteButtons = document.querySelectorAll('.delete-button');
+
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const row = button.parentNode.parentNode;
+      row.parentNode.removeChild(row);
+    });
+  });
+
+
+  // Function to toggle the popup form visibility
+        function togglePopup() {
+            var popup = document.getElementById("popup");
+            popup.style.display = (popup.style.display === "none") ? "block" : "none";
+        }
+
+  </script>
+</body>
+</html>

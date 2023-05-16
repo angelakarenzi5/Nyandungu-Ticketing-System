@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>My Homepage</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style>
+        body {
+            background-image: url("https://images.pexels.com/photos/15286/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1200");
+
+            /* Full height */
+            height: 100%;
+
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: #F5F5F5;
+        }
+
+        /* style the navbar */
+        .navbar {
+          background-color: #2E2E2E;
+        }
+
+        .navbar a {
+          color: #F5F5F5;
+        }
+
+        .navbar a:hover {
+          color: #8F9779;
+        }
+
+        /* style the footer */
+        .page-footer {
+          background-color: #2E2E2E;
+          color: black;
+        }
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Nyandungu park</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" th:href="@{/view/home}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/view/about}">About Us</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/view/history}">History</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/view/feedback}">Feedback</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/view/signup}">Signup</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/view/login}">Login</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Home Page -->
+<div class="container">
+  <h1>Home Page</h1>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed dapibus purus augue, non mattis lorem molestie a. Duis id libero in ex pulvinar auctor. Integer ultricies id eros a lacinia. Praesent eleifend risus quis nisl eleifend hendrerit. Morbi tristique turpis et nibh pulvinar, nec molestie turpis pulvinar. Fusce accumsan mi eu turpis consectetur, at cursus risus eleifend. Nullam condimentum nisi vel risus efficitur, a vestibulum leo rutrum. Morbi bibendum consequat ipsum, quis rutrum mi auctor ut. Donec elementum, sapien eget facilisis facilisis, mi orci auctor odio, a mollis justo sapien nec nisi. Duis varius lacinia augue, non dignissim enim ultrices sed. Nunc ullamcorper ipsum quis metus dictum gravida.</p>
+  <p>Phasellus sit amet eros a nibh pulvinar aliquet. Aenean eget laoreet augue. Ut laoreet diam euismod, bibendum leo sed, iaculis mi. Nullam et efficitur velit. Nam scelerisque lacinia nisi a hendrerit. Ut gravida euismod nulla, sed congue velit pellentesque id. Integer vel risus vitae justo tincidunt rhoncus in in augue. Nam ullamcorper blandit felis quis dapibus. Donec consectetur dolor nec    ut malesuada. Maecenas eu dui quis nulla tristique aliquam at eget velit. Integer iaculis semper dolor sit amet iaculis. Curabitur convallis euismod lectus, a eleifend mauris fringilla vel. Nullam nec mi vel orci tincidunt tristique. Suspendisse sollicitudin, nunc vel ultricies rutrum, odio augue tincidunt mauris, eget sagittis mauris tortor sit amet leo. Nullam ullamcorper ex ac fermentum tristique.</p>
+  <p>Mauris rhoncus, augue ac feugiat pharetra, velit sapien faucibus lectus, nec fringilla ipsum magna et odio. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Duis ac elit vitae magna pretium pulvinar. Fusce iaculis fringilla mi, sed interdum augue imperdiet in. Pellentesque ultricies odio sed nibh tristique interdum. Proin aliquam ligula ac velit consequat, eget bibendum odio tincidunt. Nunc quis sapien dui. Duis eleifend elit libero, at malesuada erat rhoncus sed. Fusce euismod a elit eu aliquam. Praesent sollicitudin augue vel purus mollis, vel tincidunt elit commodo. Vestibulum laoreet nulla eget nulla rhoncus, eget laoreet sapien suscipit.</p>
+</div>
+
+<!-- Footer -->
+<footer class="page-footer font-small bg-light pt-4">
+  <div class="container text-center">
+    <p>&copy; 2023 My Homepage. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>

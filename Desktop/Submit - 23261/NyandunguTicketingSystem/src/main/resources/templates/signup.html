@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Nyandungu Park Signup</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style>
+		body {
+            background-image: url("https://images.pexels.com/photos/15286/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1200");
+
+            /* Full height */
+            height: 100%;
+
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: #F5F5F5;
+        }
+
+        /* style the navbar */
+        .navbar {
+          background-color: #2E2E2E;
+        }
+
+        .navbar a {
+          color: #F5F5F5;
+        }
+
+        .navbar a:hover {
+          color: #8F9779;
+        }
+
+        /* style the footer */
+        .page-footer {
+          background-color: #2E2E2E;
+          color: black;
+        }
+
+		form {
+			background-color: rgba(255, 255, 255, 0.8);
+			padding: 20px;
+			width: 400px;
+			margin: 50px auto;
+			border-radius: 10px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		}
+
+		form h2 {
+			text-align: center;
+			margin-bottom: 20px;
+			font-weight: bold;
+			color: #333;
+		}
+
+		form label{
+		   color: #333;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 10px;
+			font-weight: bold;
+		}
+
+		input[type="text"],
+		input[type="email"],
+		input[type="password"],
+		input[type="number"],
+		input[type="tel"],
+		textarea {
+			width: 100%;
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			margin-bottom: 20px;
+			box-sizing: border-box;
+			font-size: 16px;
+			color: #333;
+		}
+
+		input[type="submit"] {
+			background-color: #4CAF50;
+			color: white;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+		input[type="submit"]:hover {
+			background-color: #45a049;
+		}
+	</style>
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Nyandungu park</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/view/home}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/view/about}">About Us</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/view/history}">History</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/view/feedback}">Feedback</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" th:href="@{/view/signup}">Signup</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/view/login}">Login</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+
+<div class="container">
+
+  <form th:action="@{/user/create}" th:object="${user}" method="post" name="signup" onsubmit=" return passwd()">
+    <h2>Nyandungu Park Signup</h2>
+
+    <label for="firstName" >First Name:</label>
+    <input type="text" th:field="*{firstName}" id="firstName" name="firstName" required>
+
+    <label for="lastName" >Last Name:</label>
+    <input type="text" th:field="*{lastName}" id="lastName" name="lastName" required>
+
+    <label for="email" >Email:</label>
+    <input type="email" th:field="*{username}" id="email" name="email" required>
+
+    <label for="age" >Age:</label>
+    <input type="number" th:field="*{age}" id="age" name="age" required>
+
+    <label for="phone" >Phone Number:</label>
+    <small class="form-text text-muted">Enter a 10 digit phone number</small>
+    <input type="tel" th:field="*{phoneNumber}" pattern="[0-9]{10}" id="phone" name="phone" required>
+
+    <label for="address" >Address:</label>
+    <textarea id="address" th:field="*{address}" name="address" rows="3" required></textarea>
+
+    <label for="password" >Password:</label>
+    <input type="password" th:field="*{password}" id="password" name="password" required>
+
+    <label for="password" >Confirm Password:</label>
+    <input type="password" id="password2" name="password2" required>
+
+
+    <input type="hidden" id="type" name="type" value="REGULAR" th:field="*{userType}">
+
+    <input type="submit" value="Submit">
+  </form>
+
+
+
+  <!-- Footer -->
+  <footer class="page-footer font-small bg-light pt-4">
+    <div class="container text-center">
+      <p>&copy; 2023 My Homepage. All rights reserved.</p>
+    </div>
+  </footer>
+
+
+</div>
+
+</body>
+<script>
+  function passwd(){
+  const password = document.getElementById('password').value;
+  const password2 = document.getElementById('password2').value;
+  if(password === '' || password === null){
+    alert("Password is required.");
+    document.signup.password.focus();
+    return false;
+  }
+
+  if(password2 === '' || password2 === null){
+    alert("Please confirm password.");
+    document.signup.password2.focus();
+    return false;
+  }
+
+  if(password.length <=7){
+    alert("Password too short! \n\Min:8 characters.");
+    document.signup.password.focus();
+    return false;
+  }else if(password.length>=20){
+    alert("Password too long!\n\Max:20 characters.");
+    document.signup.password.focus();
+    return false;
+  }
+
+  if(password === 'password'){
+    alert("Password cannot be 'password'.");
+    document.signup.password.focus();
+    return false;
+  }
+
+  if(password2 !== password){
+    alert("Passwords do not match.");
+    document.signup.password.focus();
+    document.signup.password2.focus();
+    return false;
+  }
+}
+</script>
+</html>
